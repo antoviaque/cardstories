@@ -171,8 +171,8 @@
           
           <!-- Facebook invite & send -->
           <div class="cardstories_fb_label">To invite your Facebook friends to play, click on "Recommend". The game you've created will be published on your Facebook wall:</div>
-          <iframe class="cardstories_fb_invite" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fplebia.org%3A4923%2Fstatic%2F%3Fgame_id%3D3&layout=standard&width=450&show_faces=false&action=recommend&colorscheme=light&font&height=80" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-          <!-- "Send" button doesn't yet work with iframe. Format: <iframe class="cardstories_fb_invite" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fplebia.org%3A4923%2Fstatic%2F%3Fgame_id%3D3&send=true&layout=standard&width=450&show_faces=false&action=recommend&colorscheme=light&font&height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>-->
+          <iframe class="cardstories_fb_invite" src="http://www.facebook.com/plugins/like.php?href={GAME_URL}&layout=standard&width=450&show_faces=false&action=recommend&colorscheme=light&font&height=80" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+          <!-- TODO: "Send" FB button doesn't yet work with iframe. Add &send=true to the above URL when it does -->
 
           <div class="cardstories_text_label">Or type in your friends emails here, separated by spaces:</div>
           <textarea class="cardstories_text" cols="88" rows="5" name="sentence"></textarea>
