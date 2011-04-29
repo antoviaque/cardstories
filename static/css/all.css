@@ -253,11 +253,39 @@
     width: 89px;
 }
 
-.cardstories .cardstories_advertise .cardstories_text {
+.cardstories .cardstories_advertise .cardstories_fb_label {
     position: absolute;
     top: 40%;
     left: 15%;
+    right: 15%;
     border: 0px;
+}
+
+.cardstories .cardstories_advertise .cardstories_fb_invite {
+    position: absolute;
+    top: 46%;
+    left: 35%;
+    border:none; 
+    overflow:hidden; 
+    width:450px; 
+    height:80px;
+}
+
+.cardstories .cardstories_advertise .cardstories_text_label {
+    position: absolute;
+    top: 51%;
+    left: 15%;
+    right: 15%;
+    border: 0px;
+}
+
+.cardstories .cardstories_advertise .cardstories_text {
+    position: absolute;
+    top: 54%;
+    left: 15%;
+    border: 1px;
+    border-color: #98727e;
+    border-style: solid;
 }
 
 .cardstories .cardstories_advertise .cardstories_counter { 
