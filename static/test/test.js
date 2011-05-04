@@ -104,6 +104,8 @@ test("create", function() {
     equal($('#qunit-fixture .cardstories_create .cardstories_pick_card.cardstories_active').length, 0, 'pick_card not active');
     $.cardstories.create(player_id, $('#qunit-fixture .cardstories'));
     equal($('#qunit-fixture .cardstories_create .cardstories_pick_card.cardstories_active').length, 1, 'pick_card active');
+    equal($('#qunit-fixture .cardstories_create .cardstories_pick_card .cardstories_cards .cardstories_card').length, 7, 'not 7 cards displayed');
+    equal($('#qunit-fixture .cardstories_create .cardstories_pick_card.cardstories_active').length, 1, 'pick_card active');
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 0, 'sentence not active');
     $('#qunit-fixture .cardstories_create .cardstories_pick_card img:nth(0)').click();
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 1, 'sentence active');

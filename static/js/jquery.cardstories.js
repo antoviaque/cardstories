@@ -52,10 +52,38 @@
             var $this = this;
             var element = $('.cardstories_create .cardstories_pick_card', root);
             this.set_active(root, element);
-            $('.cardstories_card', element).click(function() {
+
+            // Cards are all listed, but only a subset is displayed
+            var cards_pool = $('.cardstories_cards_pool', element);
+            var displayed_container = $('.cardstories_cards', element);
+            displayed_container.empty();
+
+            // Choose the available cards randomly client side (the author can recreate games to get other cards anyway)
+            var cards_array = new Array();
+            for(i=0; i < 7; i++){
+                while(true) {
+                    var rand_card = Math.floor(Math.random() * $('.cardstories_card', cards_pool).length);
+                    if($.inArray(rand_card, cards_array) == -1) {
+                        cards_array.push(rand_card);
+                        break;
+                    }
+                }
+            }
+
+            // Copy over the cards that will be available to the author
+            $('.cardstories_card', cards_pool).each(function() {
+                var card = $(this).metadata({type: "attr", name: "data"}).card;
+                if($.inArray(card, cards_array) != -1) {
+                    $(this).appendTo(displayed_container);
+                }
+            });
+
+            // Handle clicks on cards
+            $('.cardstories_card', displayed_container).click(function() {
                 var card = $(this).metadata({type: "attr", name: "data"}).card;
                 $this.create_write_sentence(player_id, card, root);
               });
+
             $('.cardstories_cards', element).jqDock({ active: 3 });
         },
 
