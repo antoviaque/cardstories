@@ -47,6 +47,8 @@ class CardstoriesGame(pollable):
     def destroy(self):
         if hasattr(self, 'timer') and self.timer.active():
             self.timer.cancel()
+        if hasattr(self, 'service'):
+            del self.service
         return pollable.destroy(self)
 
     def get_id(self):
@@ -237,6 +239,7 @@ class CardstoriesGame(pollable):
                 discarded.append(player[0])
             else:
                 board.append(player[3])
+        random.shuffle(board)
         yield self.leave(discarded)
         board = ''.join([chr(card) for card in board])
         yield self.service.db.runOperation("UPDATE games SET board = ?, state = 'vote' WHERE id = ?", [ board, self.get_id() ])

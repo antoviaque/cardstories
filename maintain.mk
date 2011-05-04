@@ -23,12 +23,14 @@ check:
 	jscoverage --no-instrument=js/jquery.query-2.1.7.js static static-coverage
 
 clean:
-	debuild clean
 	make -C tests clean
 	find . -name '*,cover' | xargs rm -f
+	rm -fr static-coverage
 	rm -f etc/cardstories/twisted/plugins/dropin.cache
 	find . -name '*~' | xargs rm -f
 	find . -name '*.pyc' | xargs rm -f
 	rm -fr dist
 	rm -fr static/cardstories.zip
-	rm MANIFEST
+	rm -f MANIFEST
+	rm -fr build
+

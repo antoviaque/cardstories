@@ -33,14 +33,15 @@ for dirpath, dirnames, filenames in os.walk('static'):
 
 data_files.append(['/etc/default', ['etc/default/cardstories']])
 data_files.append(['/etc/cardstories/twisted/plugins', ['etc/cardstories/twisted/plugins/twisted_cardstories.py']])
+data_files.append(['/usr/share/cardstories/conf', [ 'conf/nginx.conf' ]])
 
 setup(name='cardstories',
-      version='1.0.0',
-      requires=['twisted (>=10.2.0)'],
+      version='1.0.2',
+      requires=['twisted (>=10.1.0)'],
       description='Find out a card using a sentence made up by another player',
       author='Loic Dachary',
       author_email='loic@dachary.org',
-      url='http://cardstories.dachary.org/',
+      url='http://cardstori.es/',
       license='GNU AGPLv3+',
       data_files=data_files,
       packages=['cardstories'])

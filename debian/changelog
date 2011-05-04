@@ -1,7 +1,25 @@
-cardstories (1.0.0) unstable; urgency=low
+cardstories (1.0.3-2) unstable; urgency=low
 
-  [ Loic Dachary (OuoU) ]
-  * initial version
+  * upstream release
 
- -- Loic Dachary (OuoU) <loic@debian.org>  Sun, 20 Mar 2011 13:01:25 -0400
+ -- Loic Dachary (OuoU) <loic@debian.org>  Tue, 26 Apr 2011 17:50:18 +0200
+
+cardstories (1.0.2-1) unstable; urgency=low
+
+  * upstream release
+
+ -- Loic Dachary (OuoU) <loic@debian.org>  Mon, 25 Apr 2011 19:58:03 +0200
+
+cardstories (1.0.1-1) unstable; urgency=low
+
+  * switch to dh_python2 as explained in 
+    http://wiki.debian.org/Python/PythonSupportToDHPython2
+
+ -- Loic Dachary (OuoU) <loic@debian.org>  Mon, 25 Apr 2011 12:11:01 +0200
+
+cardstories (1.0.0-1) unstable; urgency=low
+
+  * cardstories ITP (Closes: #623810).
+
+ -- Loic Dachary (OuoU) <loic@debian.org>  Sat, 23 Apr 2011 15:45:44 +0200
 

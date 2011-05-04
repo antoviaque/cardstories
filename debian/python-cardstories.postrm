@@ -18,12 +18,52 @@
 # "AGPLv3".  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#DEBHELPER#
+nginx_remove() {
+    included=/usr/share/cardstories/conf/nginx.conf
+    conf=/etc/nginx/sites-available/default
+    if [ -f $conf ] && grep $included $conf > /dev/null ; then
+	perl -ni -e "print if(!m:$included:)" $conf
+    fi
+}
+
+if [ -f /usr/share/debconf/confmodule ]; then
+    . /usr/share/debconf/confmodule
+fi
 
 if [ "$1" = "purge" ]; then
     if id -u cardstories >/dev/null 2>&1; then
         userdel cardstories
     fi
-    # Policy says log files "should be" removed.
-    rm -Rf /var/cache/cardstories /var/log/cardstories
+    rm -Rf /var/lib/cardstories /var/log/cardstories /etc/cardstories
 fi
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+
+    if [ -f /usr/share/debconf/confmodule ]; then
+        db_version 2.0
+
+        db_get python-cardstories/reconfigure-webserver
+
+        webservers="$RET"
+
+        for webserver in $webservers; do
+            webserver=${webserver%,}
+            if [ "$webserver" = "nginx" ] ; then
+                nginx_remove
+            fi
+
+	    # Redirection of 3 is needed because Debconf uses it and it might 
+	    # be inherited by webserver. See bug #446324.
+            if [ -f /etc/init.d/$webserver ] ; then
+                if [ -x /usr/sbin/invoke-rc.d ]; then
+                    invoke-rc.d $webserver reload 3>/dev/null || true
+                else
+                    /etc/init.d/$webserver reload 3>/dev/null || true
+                fi
+            fi
+        done
+    fi
+fi
+
+#DEBHELPER#
+

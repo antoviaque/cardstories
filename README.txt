@@ -1,6 +1,8 @@
-Copyright (C) 2011 Xavier Antoviaque <xavier@antoviaque.org> (gameplay and specifications)
-Copyright (C) 2011 David Blanchard <david@blanchard.name> (gameplay and specifications)
-Copyright (C) 2011 tartarugafeliz <contact@tartarugafeliz.com> (artwork)
+http://cardstori.es/
+
+Copyright (C) 2010,2011 Xavier Antoviaque <xavier@antoviaque.org> (gameplay and specifications)
+Copyright (C) 2010,2011 David Blanchard <david@blanchard.name> (gameplay and specifications)
+Copyright (C) 2010,2011 tartarugafeliz <contact@tartarugafeliz.com> (artwork)
 Copyright (C) 2011 Loic Dachary <loic@dachary.org> (software)
 
   A player (who we will call the author) creates a new game. 
@@ -17,6 +19,11 @@ Copyright (C) 2011 Loic Dachary <loic@dachary.org> (software)
 # display usage
 PYTHONPATH=.:etc/cardstories twistd cardstories --help
 # run locally with all features activated
-PYTHONPATH=.:etc/cardstories twistd --nodaemon cardstories --static $(pwd)/static --port 4923 --db /tmp/cardstories.sqlite --auth basic --auth-db /tmp/authcardstories.sqlite
+PYTHONPATH=.:etc/cardstories twistd --nodaemon cardstories --static $(pwd)/static --port 5000 --interface 0.0.0.0 --db /tmp/cardstories.sqlite --auth basic --auth-db /tmp/authcardstories.sqlite
 # check if the webservice replies. The following must return the {} string
 curl --silent http://localhost:4923/resource
+
+To create a source distribution use:
+v=1.0.1 ; python setup.py sdist --dist-dir .. ; mv ../cardstories-$v.tar.gz ../cardstories_$v.orig.tar.gz
+To create the Debian GNU/Linux package use:
+dpkg-buildpackage -S -uc -us

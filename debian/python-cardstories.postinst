@@ -18,15 +18,52 @@
 # "AGPLv3".  If not, see <http://www.gnu.org/licenses/>.
 #
 
+nginx_install() {
+    included=/usr/share/cardstories/conf/nginx.conf
+    conf=/etc/nginx/sites-available/default
+    if [ -f $conf ] && ! grep $included $conf > /dev/null ; then
+	perl -pi -e "print \"\tinclude $included;\n\" if(m:location / {:)" $conf
+    fi
+}
+
+. /usr/share/debconf/confmodule
+
 if ! id -u cardstories >/dev/null 2>&1; then
     adduser --quiet --system --no-create-home --home /var/run/cardstories cardstories
 fi
 
-for d in /var/run/cardstories /var/log/cardstories /var/cache/cardstories; do
+for d in /var/run/cardstories /var/log/cardstories /var/lib/cardstories; do
     mkdir -p $d
     chown cardstories:nogroup $d
     chmod 755 $d
 done
+
+if [ "$1" = "configure" ]; then
+
+    db_version 2.0
+
+    db_get python-cardstories/reconfigure-webserver
+
+    webservers="$RET"
+
+    for webserver in $webservers; do
+        webserver=${webserver%,}
+        if [ "$webserver" = "nginx" ] ; then
+            nginx_install
+        fi
+
+	# Redirection of 3 is needed because Debconf uses it and it might 
+	# be inherited by webserver. See bug #446324.
+        if [ -f /etc/init.d/$webserver ] ; then
+            if [ -x /usr/sbin/invoke-rc.d ]; then
+                invoke-rc.d $webserver reload 3>/dev/null || true
+            else
+                /etc/init.d/$webserver reload 3>/dev/null || true
+            fi
+        fi
+    done
+
+fi
 
 #DEBHELPER#
 
