@@ -13,6 +13,9 @@
 	<script type="text/javascript" src="js/jquery.jqDock.min.js"></script>
 	<link rel="stylesheet" href="css/all.css" type="text/css" media="screen">
 	<link rel="stylesheet" href="css/images.css" type="text/css" media="screen">
+	<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/jquery.contactable.js"></script>
+	<link rel="stylesheet" href="css/contactable.css" type="text/css" />
 	<script type="text/javascript" src="js/jquery.cardstories.js"></script>
 	<script type="text/javascript" src="test/skin.js"></script>
 	<script type="text/javascript" src="js/jquery.query-2.1.7.js"></script>
@@ -32,6 +35,7 @@
         <a href="?skin=complete">complete</a>
         <a href="?skin=name">name</a>
       </div>
+      <div id="contactable"></div>
       <div class="cardstories">
         <div class="cardstories_logo"></div>
         <div class="cardstories_line cardstories_line_top"></div>
@@ -323,6 +327,19 @@
         } else {
           $('.cardstories').cardstories($.query.get('player_id'), $.query.get('game_id'));
         }
+
+	// Feedback tab	
+        $('#contactable').contactable({
+            subject: '[Feedback] '+location.href,
+            name: 'Name',
+            email: 'Email',
+            message : 'Comment, issue or suggestion',
+            recievedMsg : 'Thank you for helping Card Stories to improve!',
+            notRecievedMsg : 'Sorry, your message could not be sent - could you email bar@farsides.com to notify of the issue?',
+            disclaimer: "Please let us know what you think! It goes straight to the developers' inbox and helps improving the game.",
+            hideOnSubmit: false
+        });
+
       </script>
 </body>
 </html>

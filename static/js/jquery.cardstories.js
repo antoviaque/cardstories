@@ -631,6 +631,7 @@
         if(player_id === undefined || player_id === '') {
           player_id = $.cookie('CARDSTORIES_ID');
         }
+
         return this.each(function() {
             $(this).toggleClass('cardstories_root', true);
             $(this).metadata().poll = 1;
