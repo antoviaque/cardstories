@@ -89,10 +89,9 @@ test("send_game", function() {
 
 test("create", function() {
     setup();
-    expect(7);
+    expect(9);
 
     var player_id = 15;
-    var card = 1;
     var sentence = 'SENTENCE';
 
     $.cardstories.ajax = function(options) {
@@ -107,7 +106,12 @@ test("create", function() {
     equal($('#qunit-fixture .cardstories_create .cardstories_pick_card .cardstories_cards .cardstories_card').length, 7, 'not 7 cards displayed');
     equal($('#qunit-fixture .cardstories_create .cardstories_pick_card.cardstories_active').length, 1, 'pick_card active');
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 0, 'sentence not active');
-    $('#qunit-fixture .cardstories_create .cardstories_pick_card img:nth(0)').click();
+
+    // Cards are random, so get the number of the card that we'll be clicking on
+    var card_dom = $('#qunit-fixture .cardstories_create .cardstories_pick_card img:nth(0)');
+    var card = card_dom.metadata({type: "attr", name: "data"}).card;
+    card_dom.click();
+
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 1, 'sentence active');
     $('#qunit-fixture .cardstories_create .cardstories_write_sentence .cardstories_sentence').val(sentence);
     $('#qunit-fixture .cardstories_create .cardstories_write_sentence .cardstories_submit').click();
@@ -181,7 +185,7 @@ test("invitation_owner_invite_more", function() {
     equal($('#qunit-fixture .cardstories_invitation .cardstories_owner.cardstories_active').length, 1);
     $('#qunit-fixture .cardstories_invitation .cardstories_owner .cardstories_invite_friends').click();
     equal($('#qunit-fixture .cardstories_invitation .cardstories_owner.cardstories_active').length, 0);
-    equal($('#qunit-fixture .cardstories_create .cardstories_advertise.cardstories_active').length, 1);
+    equal($('#qunit-fixture .cardstories_advertise.cardstories_active').length, 1);
 });
 
 test("invitation_owner", function() {

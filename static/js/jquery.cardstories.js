@@ -51,38 +51,27 @@
         create_pick_card: function(player_id, root) {
             var $this = this;
             var element = $('.cardstories_create .cardstories_pick_card', root);
+            var cards_container = $('.cardstories_cards', element);
             this.set_active(root, element);
 
-            // Cards are all listed, but only a subset is displayed
-            var cards_pool = $('.cardstories_cards_pool', element);
-            var displayed_container = $('.cardstories_cards', element);
-            displayed_container.empty();
-
             // Choose the available cards randomly client side (the author can recreate games to get other cards anyway)
-            var cards_array = new Array();
+            var cards = new Array();
             for(i=0; i < 7; i++){
                 while(true) {
-                    var rand_card = Math.floor(Math.random() * $('.cardstories_card', cards_pool).length);
-                    if($.inArray(rand_card, cards_array) == -1) {
-                        cards_array.push(rand_card);
+                    var rand_card = Math.floor(Math.random() * 36); // FIXME Hardcoded number of cards
+
+                    // Don't add the same card twice
+                    if($.inArray(rand_card, cards) == -1) {
+                        cards.push(rand_card);
                         break;
                     }
                 }
             }
 
-            // Copy over the cards that will be available to the author
-            $('.cardstories_card', cards_pool).each(function() {
-                var card = $(this).metadata({type: "attr", name: "data"}).card;
-                if($.inArray(card, cards_array) != -1) {
-                    $(this).appendTo(displayed_container);
-                }
-            });
-
-            // Handle clicks on cards
-            $('.cardstories_card', displayed_container).click(function() {
-                var card = $(this).metadata({type: "attr", name: "data"}).card;
+            var callback = function(card) {
                 $this.create_write_sentence(player_id, card, root);
-              });
+            };
+            this.select_card(callback, cards, element);
 
             $('.cardstories_cards', element).jqDock({ active: 3 });
         },
@@ -366,9 +355,18 @@
             var $this = this;
             this.set_active(root, element);
             $('.cardstories_sentence', element).text(sentence);
+
+            var callback = function(card) {
+                $this.send_game(player_id, game_id, element, 'action=' + action + '&player_id=' + player_id + '&game_id=' + game_id + '&card=' + card);
+            }
+
+            this.select_card(callback, cards, element);
+        },
+
+        select_card: function(callback, cards, element) {
             $('.cardstories_card', element).unbind('click').click(function() {
                 var card = $(this).metadata({type: "attr", name: "data"}).card;
-                $this.send_game(player_id, game_id, element, 'action=' + action + '&player_id=' + player_id + '&game_id=' + game_id + '&card=' + card);
+                callback(card);
             });
             var meta = $('.cardstories_cards', element).metadata({type: "attr", name: "data"});
             $('.cardstories_card', element).each(function(index) {
