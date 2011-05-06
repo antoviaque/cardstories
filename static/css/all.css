@@ -53,7 +53,7 @@ body {
 }
 
 /* Change cursor to treat buttons as links */
-.cardstories_card, .cardstories_submit, .cardstories_start_story, .cardstories_invite_friends, .cardstories_ready {
+.cardstories_clickable, .cardstories_submit, .cardstories_start_story, .cardstories_invite_friends, .cardstories_ready {
     cursor: pointer;
 }
 
