@@ -71,6 +71,15 @@ body {
     height:100%;
 }
 
+.jqDockLabel {
+    margin-top: -25px !important; 
+    font-weight: bold; 
+    font-size: 20px; 
+    white-space: nowrap; 
+    color: #000000;
+    text-decoration: none;
+}
+
 /* state where a sentence is displayed below the top line */
 
 .cardstories .cardstories_sentence_container {

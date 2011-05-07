@@ -384,14 +384,9 @@
                 card_links.each(function(index) {
                     // Default values
                     var card = cards[index];
-                    var title = meta.waiting;
                     var card_file = meta.nocard;
 
                     // Store data on the transparent image
-                    if(index < titles.length) {
-                        title = titles[index];
-                    }
-                    $('.cardstories_card', this).attr('title', title);
                     $('.cardstories_card', this).metadata({type: "attr", name: "data"}).card = card;
 
                     // Insert real card image (overlapping)
@@ -408,6 +403,19 @@
                         $(this).click(function() { callback(card); });
                     }
                 });
+            }
+
+            // Labels for the cards
+            if(titles.length > 0) {
+                options['setLabel'] = function(title, index, element) { // element = div.jqDockLabel
+                    var title = meta.waiting;
+
+                    if(index < titles.length) {
+                        title = titles[index];
+                    }
+
+                    return title;
+                }
             }
 
             // Build the dock
