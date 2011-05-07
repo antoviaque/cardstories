@@ -53,13 +53,22 @@ body {
 }
 
 /* Change cursor to treat buttons as links */
-.cardstories_clickable, .cardstories_submit, .cardstories_start_story, .cardstories_invite_friends, .cardstories_ready {
+.cardstories_submit, .cardstories_start_story, .cardstories_invite_friends, .cardstories_ready {
     cursor: pointer;
 }
 
 .cardstories_lobby_sentence {
     cursor: pointer;
     text-decoration: underline;
+}
+
+/* Dock trick to display overlapping cards */
+
+.cardstories_card_overlapping {
+    position:absolute; 
+    top:0; 
+    left:0; 
+    height:100%;
 }
 
 /* state where a sentence is displayed below the top line */
@@ -101,9 +110,7 @@ body {
 
 /* state create : pick a card */
 
-.cardstories .cardstories_create .cardstories_pick_card .cardstories_cards { position: absolute; left: 0px; bottom: 15%; display: none }
-
-.cardstories .cardstories_create .cardstories_pick_card .cardstories_cards_pool { display: none; }
+.cardstories .cardstories_create .cardstories_pick_card .cardstories_cards { position: absolute; left: 30px; bottom: 15%; display: none }
 
 .cardstories .cardstories_create .cardstories_bubble_pick_a_card { 
     position: absolute;
@@ -351,8 +358,9 @@ body {
 .cardstories .cardstories_invitation .cardstories_owner .cardstories_cards {
     position: absolute;
     bottom: 20%;
-    left: 25%;
+    left: 21%;
     z-index: 1;
+    display: none;
 }
 
 /* state invitation, player point of view : pick a card */
@@ -394,8 +402,9 @@ body {
 .cardstories .cardstories_vote .cardstories_voter .cardstories_cards {
     position: absolute;
     bottom: 15%;
-    left: 5%;
+    left: 30px;
     z-index: 1;
+    display: none;
 }
 
 .cardstories .cardstories_invitation .cardstories_pick .cardstories_submit,

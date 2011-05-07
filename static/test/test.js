@@ -108,9 +108,9 @@ test("create", function() {
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 0, 'sentence not active');
 
     // Cards are random, so get the number of the card that we'll be clicking on
-    var card_dom = $('#qunit-fixture .cardstories_create .cardstories_pick_card img:nth(0)');
-    var card = card_dom.metadata({type: "attr", name: "data"}).card;
-    card_dom.click();
+    var card_link = $('#qunit-fixture .cardstories_create .cardstories_pick_card .cardstories_card_link:nth(0)');
+    var card = $('.cardstories_card', card_link).metadata({type: "attr", name: "data"}).card;
+    card_link.click();
 
     equal($('#qunit-fixture .cardstories_create .cardstories_write_sentence.cardstories_active').length, 1, 'sentence active');
     $('#qunit-fixture .cardstories_create .cardstories_write_sentence .cardstories_sentence').val(sentence);

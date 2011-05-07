@@ -58,7 +58,7 @@
             var cards = new Array();
             for(i=0; i < 7; i++){
                 while(true) {
-                    var rand_card = Math.floor(Math.random() * 36); // FIXME Hardcoded number of cards
+                    var rand_card = Math.floor(Math.random() * 36) + 1; // FIXME Hardcoded number of cards
 
                     // Don't add the same card twice
                     if($.inArray(rand_card, cards) == -1) {
@@ -71,9 +71,7 @@
             var callback = function(card) {
                 $this.create_write_sentence(player_id, card, root);
             };
-            this.select_card(callback, cards, element);
-
-            $('.cardstories_cards', element).jqDock({ active: 3 });
+            this.select_card(element, cards, callback);
         },
 
         create_write_sentence: function(player_id, card, root) {
@@ -314,22 +312,19 @@
             this.set_active(root, element);
             $('a.cardstories_invite').attr('href', '?game_id=' + game.id);
             $('a.cardstories_refresh').attr('href', '?player_id=' + player_id + '&game_id=' + game.id);
+
+            // Prepare cards and titles arrays to display on the dock
             var players = game.players;
-            var meta = $('.cardstories_cards', element).metadata({type: "attr", name: "data"});
-            $('.cardstories_card', element).each(function(index) {
-                var card_file = meta.nocard;
-                var title = meta.waiting;
-                if(index < players.length) {
-                  title = players[index][0];
-                  var card = players[index][3];
-                  if(card !== null) {
-                    card_file = meta.card.supplant({'card': card});
-                  }
-                }
-                $(this).attr('src', card_file);
-                $(this).attr('title', title);
-              });            
-            $('.cardstories_cards', element).jqDock({ active: 3, labels: 'tc' });
+            var cards = new Array();
+            var titles = new Array();
+            for(index = 0; index < players.length ; index++) {
+                titles.push(players[index][0]);
+                cards.push(players[index][3]);
+            }
+
+            this.select_card(element, cards, null, titles, { labels: 'tc', size: 150 });
+
+            // Links to other steps
             var voting = $('.cardstories_voting', element);
             voting.toggleClass('cardstories_ready', game.ready);
             if(game.ready) {
@@ -348,10 +343,13 @@
             var element = $('.cardstories_invitation .cardstories_pick', root);
             this.set_active(root, element);
             this.player_select_card(player_id, game.id, game.sentence, game.self[2], 'pick', element, root);
-            $('.cardstories_cards', element).jqDock({ active: game.self[2].length / 2});
         },
 
-        player_select_card: function(player_id, game_id, sentence, cards, action, element, root) {
+        player_select_card: function(player_id, game_id, sentence, cards, action, element, root, title, options) {
+            // Optional arguments
+            if (!titles) var titles = new Array();
+            if (!options) var options = new Array();
+
             var $this = this;
             this.set_active(root, element);
             $('.cardstories_sentence', element).text(sentence);
@@ -359,25 +357,61 @@
             var callback = function(card) {
                 $this.send_game(player_id, game_id, element, 'action=' + action + '&player_id=' + player_id + '&game_id=' + game_id + '&card=' + card);
             }
-
-            this.select_card(callback, cards, element);
+            this.select_card(element, cards, callback);
         },
 
-        select_card: function(callback, cards, element) {
-            $('.cardstories_card', element).unbind('click').click(function() {
-                var card = $(this).metadata({type: "attr", name: "data"}).card;
-                callback(card);
-            });
+        select_card: function(element, cards, callback, titles, options) {
+            // Optional arguments
+            if(!callback) var callback = null;
+            if(!titles) var titles = new Array();
+            if(!options) var options = new Array();
+
+            // Add generic options shared by all docks
+            if(!('active' in options)) options['active'] = 2;
+            if(!('size' in options)) options['size'] = 200;
+            if(!('distance' in options)) options['distance'] = 200;
+
+            // Take data to populate individual card elements from the container (template)
             var meta = $('.cardstories_cards', element).metadata({type: "attr", name: "data"});
-            $('.cardstories_card', element).each(function(index) {
-                var card = cards[index];
-                var card_file = meta.nocard;
-                if(index < cards.length) {
-                  card_file = meta.card.supplant({'card': cards[index]});
-                }
-                $(this).attr('src', card_file);
-                $(this).metadata({type: "attr", name: "data"}).card = card;
-              });            
+
+            // The card slots to fill
+            var card_links = $('.cardstories_card_link', element);
+
+            // Trick to make cards overlap
+            // jqDock positions the cards based on a smaller transparent image
+            // the actual image is added after the dock formatting
+            options['onReady'] = function(is_ready) {
+                card_links.each(function(index) {
+                    // Default values
+                    var card = cards[index];
+                    var title = meta.waiting;
+                    var card_file = meta.nocard;
+
+                    // Store data on the transparent image
+                    if(index < titles.length) {
+                        title = titles[index];
+                    }
+                    $('.cardstories_card', this).attr('title', title);
+                    $('.cardstories_card', this).metadata({type: "attr", name: "data"}).card = card;
+
+                    // Insert real card image (overlapping)
+                    if(index < cards.length && card !== null) {
+                        card_file = meta.card.supplant({'card': card});
+                    }
+                    $('<img class="cardstories_card_overlapping" src="' + card_file + '" alt="" />')
+                        .css({zIndex: card_links.length - index})
+                        .appendTo($(this).css({zIndex: 2 * (card_links.length - index)}));
+
+                    // Link
+                    $(this).unbind('click');
+                    if(callback) {
+                        $(this).click(function() { callback(card); });
+                    }
+                });
+            }
+
+            // Build the dock
+            $('.cardstories_cards', element).jqDock(options);
         },
 
         confirm_participate: false,
@@ -433,19 +467,19 @@
             var $this = this;
             var picked = game.self[0];
             var voted = game.self[1];
+            var titles = new Array();
             $('.cardstories_card', element).each(function(index) {
                 var is_picked = picked == cards[index];
                 if(is_picked) {
                   $(this).unbind('click');
                 }
                 if(is_picked) {
-                  $(this).attr('title', 'My Card');
+                  titles.push('My Card');
                 } else {
-                  $(this).removeAttr('title');
+                  titles.push(null);
                 }
             });
-            this.player_select_card(player_id, game.id, game.sentence, cards, 'vote', element, root);
-            $('.cardstories_cards', element).jqDock({ active: cards.length / 2, labels: 'tc'});
+            this.player_select_card(player_id, game.id, game.sentence, cards, 'vote', element, root, titles, { labels: 'tc'});
         },
 
         vote_owner: function(player_id, game, root) {
