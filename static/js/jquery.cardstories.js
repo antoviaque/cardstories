@@ -371,11 +371,16 @@
             if(!('size' in options)) options['size'] = 200;
             if(!('distance' in options)) options['distance'] = 200;
 
-            // Take data to populate individual card elements from the container (template)
-            var meta = $('.cardstories_cards', element).metadata({type: "attr", name: "data"});
-
+            // The cards hand, containing everything related to the dock display
+            var hand = $('.cardstories_cards_hand', element);
+            // The jqDock dock itself
+            var dock = $('.cardstories_cards', hand);
             // The card slots to fill
-            var card_links = $('.cardstories_card_link', element);
+            var card_links = $('.cardstories_card_link', dock);
+            // The template used to populate card slots
+            var card_template = $('.cardstories_card_template', hand);
+            // Take data to populate individual card elements from the template container
+            var meta = card_template.metadata({type: "attr", name: "data"});
 
             // Trick to make cards overlap
             // jqDock positions the cards based on a smaller transparent image
@@ -385,22 +390,44 @@
                     // Default values
                     var card = cards[index];
                     var card_file = meta.nocard;
-
-                    // Store data on the transparent image
-                    $('.cardstories_card', this).metadata({type: "attr", name: "data"}).card = card;
+                    var card_bg = meta.card_bg;
+                    var card_bg_selected = meta.card_bg_selected;
 
                     // Insert real card image (overlapping)
                     if(index < cards.length && card !== null) {
                         card_file = meta.card.supplant({'card': card});
                     }
-                    $('<img class="cardstories_card_overlapping" src="' + card_file + '" alt="" />')
-                        .css({zIndex: card_links.length - index})
-                        .appendTo($(this).css({zIndex: 2 * (card_links.length - index)}));
+                    $(this).css({zIndex: 3 * (card_links.length - index)})
+                        .append(card_template.html());
+                    $('.cardstories_card_foreground', this).attr('src', card_file)
+                        .css({zIndex: 2 * (card_links.length - index)});
+                    $('.cardstories_card_background', this).attr('src', card_bg)
+                        .css({zIndex: card_links.length - index});
+
+                    // Store card number
+                    $('.cardstories_card_foreground', this).metadata({type: "attr", name: "data"}).card = card;
 
                     // Link
+                    // Freeze the dock and show confirmation message if a callback was specified
                     $(this).unbind('click');
                     if(callback) {
-                        $(this).click(function() { callback(card); });
+                        var card_link = $(this);
+                        $('.cardstories_card_foreground', this).click(function() { 
+                            if(card_link.filter('.cardstories_card_selected').removeClass('cardstories_card_selected').length) {
+                                dock.jqDock('nudge'); // Unfreeze
+                                $('.cardstories_card_background', card_link).attr('src', card_bg);
+                            } else if(!$('.cardstories_card_selected', dock).length){
+                                dock.jqDock('freeze'); // Freeze
+                                card_link.addClass('cardstories_card_selected');
+                                $('.cardstories_card_background', card_link).attr('src', card_bg_selected);
+                            }
+                            this.blur();
+                            return false;
+                       });
+                       // Add callback on confirmation dialog
+                       $('.cardstories_submit', this).click(function() {
+                           callback(card);
+                       });
                     }
                 });
             }
@@ -409,17 +436,15 @@
             if(titles.length > 0) {
                 options['setLabel'] = function(title, index, element) { // element = div.jqDockLabel
                     var title = meta.waiting;
-
                     if(index < titles.length) {
                         title = titles[index];
                     }
-
                     return title;
                 }
             }
 
             // Build the dock
-            $('.cardstories_cards', element).jqDock(options);
+            dock.jqDock(options);
         },
 
         confirm_participate: false,
