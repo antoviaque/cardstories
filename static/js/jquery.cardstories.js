@@ -347,7 +347,7 @@
 
         player_select_card: function(player_id, game_id, sentence, cards, action, element, root, title, options) {
             // Optional arguments
-            if (!titles) { titles = []; }
+            if (!title) { title = []; }
             if (!options) { options = []; }
 
             var $this = this;
