@@ -55,7 +55,7 @@
             this.set_active(root, element);
 
             // Choose the available cards randomly client side (the author can recreate games to get other cards anyway)
-            var cards = new Array();
+            var cards = [];
             for(i=0; i < 7; i++){
                 while(true) {
                     var rand_card = Math.floor(Math.random() * 36) + 1; // FIXME Hardcoded number of cards
@@ -239,7 +239,7 @@
                                        'sentence': game[1],
                                        'state': game[2],
                                        'role': role,
-                                       'win': win,
+                                       'win': win
                                       });
               rows.push(row);
             }
@@ -315,8 +315,8 @@
 
             // Prepare cards and titles arrays to display on the dock
             var players = game.players;
-            var cards = new Array();
-            var titles = new Array();
+            var cards = [];
+            var titles = [];
             for(index = 0; index < players.length ; index++) {
                 titles.push(players[index][0]);
                 cards.push(players[index][3]);
@@ -347,8 +347,8 @@
 
         player_select_card: function(player_id, game_id, sentence, cards, action, element, root, title, options) {
             // Optional arguments
-            if (!titles) var titles = new Array();
-            if (!options) var options = new Array();
+            if (!titles) { titles = []; }
+            if (!options) { options = []; }
 
             var $this = this;
             this.set_active(root, element);
@@ -356,20 +356,20 @@
 
             var callback = function(card) {
                 $this.send_game(player_id, game_id, element, 'action=' + action + '&player_id=' + player_id + '&game_id=' + game_id + '&card=' + card);
-            }
+            };
             this.select_card(element, cards, callback);
         },
 
         select_card: function(element, cards, callback, titles, options) {
             // Optional arguments
-            if(!callback) var callback = null;
-            if(!titles) var titles = new Array();
-            if(!options) var options = new Array();
+            if(!callback) { callback = null; }
+            if(!titles) { titles = []; }
+            if(!options) { options = {}; }
 
             // Add generic options shared by all docks
-            if(!('active' in options)) options['active'] = 2;
-            if(!('size' in options)) options['size'] = 200;
-            if(!('distance' in options)) options['distance'] = 200;
+            if(!('active' in options)) { options.active = 2; }
+            if(!('size' in options)) { options.size = 200; }
+            if(!('distance' in options)) { options.distance = 200; }
 
             // The cards hand, containing everything related to the dock display
             var hand = $('.cardstories_cards_hand', element);
@@ -385,7 +385,7 @@
             // Trick to make cards overlap
             // jqDock positions the cards based on a smaller transparent image
             // the actual image is added after the dock formatting
-            options['onReady'] = function(is_ready) {
+            options.onReady = function(is_ready) {
                 card_links.each(function(index) {
                     // Default values
                     var card = cards[index];
@@ -397,12 +397,12 @@
                     if(index < cards.length && card !== null) {
                         card_file = meta.card.supplant({'card': card});
                     }
-                    $(this).css({zIndex: 3 * (card_links.length - index)})
-                        .append(card_template.html());
-                    $('.cardstories_card_foreground', this).attr('src', card_file)
-                        .css({zIndex: 2 * (card_links.length - index)});
-                    $('.cardstories_card_background', this).attr('src', card_bg)
-                        .css({zIndex: card_links.length - index});
+                    $(this).css({zIndex: 3 * (card_links.length - index)});
+                    $(this).append(card_template.html());
+                    $('.cardstories_card_foreground', this).attr('src', card_file);
+                    $('.cardstories_card_foreground', this).css({zIndex: 2 * (card_links.length - index)});
+                    $('.cardstories_card_background', this).attr('src', card_bg);
+                    $('.cardstories_card_background', this).css({zIndex: card_links.length - index});
 
                     // Store card number
                     $('.cardstories_card_foreground', this).metadata({type: "attr", name: "data"}).card = card;
@@ -430,17 +430,17 @@
                        });
                     }
                 });
-            }
+            };
 
             // Labels for the cards
             if(titles.length > 0) {
-                options['setLabel'] = function(title, index, element) { // element = div.jqDockLabel
-                    var title = meta.waiting;
+                options.setLabel = function(title, index, element) { // element = div.jqDockLabel
+                    title = meta.waiting;
                     if(index < titles.length) {
                         title = titles[index];
                     }
                     return title;
-                }
+                };
             }
 
             // Build the dock
@@ -500,7 +500,7 @@
             var $this = this;
             var picked = game.self[0];
             var voted = game.self[1];
-            var titles = new Array();
+            var titles = [];
             $('.cardstories_card', element).each(function(index) {
                 var is_picked = picked == cards[index];
                 if(is_picked) {
