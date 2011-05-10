@@ -519,7 +519,8 @@
             var $this = this;
             var element = $('.cardstories_vote .cardstories_owner', root);
             this.set_active(root, element);
-            $('.cardstories_sentence', element).text(game.sentence);
+
+            // Activate the button to publish the results if the game is ready
             var finish = $('.cardstories_finish', element);
             finish.toggleClass('cardstories_ready', game.ready);
             if(game.ready) {
@@ -527,44 +528,22 @@
                     $this.send_game(player_id, game.id, element, 'action=complete&owner_id=' + player_id + '&game_id=' + game.id);
                 });
             }
-
-            var i;
-            var board2voters = {};
-            for(i = 0; i < game.board.length; i++) {
-              board2voters[game.board[i]] = [];
-            }
-            for(i = 0; i < game.players.length; i++) {
-              var vote = game.players[i][1];
-              var voters = board2voters[vote];
-              if(voters !== undefined) {
-                voters.push(game.players[i][0]);
-              }
-            }
-            var cards = game.board;
-            $('.cardstories_card', element).each(function(index) {
-                var card = cards[index];
-                var c = 'cardstories_card cardstories_card' + card + ' {card:' + card + '}';
-                $(this).attr('class', c);
-                
-                var voters = board2voters[card];
-                if(voters !== undefined) {
-                  var siblings = $(this).siblings('.cardstories_results');
-                  $('.cardstories_result', siblings).each(function(voter_index) {
-                      if(voters.length > voter_index) {
-                        $(this).text(voters[voter_index]);
-                        $(this).show();
-                      } else {
-                        $(this).hide();
-                      }
-                    });
-                }
-            });
+            
+            // Display the current board state
+            this.results_board(player_id, game, element);
         },
 
         complete: function(player_id, game, root) {
             var element = $('.cardstories_complete', root);
             this.set_active(root, element);
+
+            // Display the current board state
+            this.results_board(player_id, game, element);
+        },
+
+        results_board: function(player_id, game, element) {
             $('.cardstories_sentence', element).text(game.sentence);
+
             var i;
             var board2voters = {};
             for(i = 0; i < game.board.length; i++) {
