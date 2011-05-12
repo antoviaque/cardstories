@@ -45,7 +45,19 @@
         },
 
         create: function(player_id, root) {
-            this.create_pick_card(player_id, root);
+            return this.create_pick_card(player_id, root);
+        },
+
+        create_deck: function() {
+            var deck = [];
+            for(var i = 1; i <= 36; i++) {
+                deck.push(i);
+            }
+            var cards = [];
+            for(var i = 0; i < 7; i++) {
+                cards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+            }
+            return cards;
         },
 
         create_pick_card: function(player_id, root) {
@@ -53,25 +65,13 @@
             var element = $('.cardstories_create .cardstories_pick_card', root);
             var cards_container = $('.cardstories_cards', element);
             this.set_active(root, element);
-
-            // Choose the available cards randomly client side (the author can recreate games to get other cards anyway)
-            var cards = [];
-            for(i=0; i < 7; i++){
-                while(true) {
-                    var rand_card = Math.floor(Math.random() * 36) + 1; // FIXME Hardcoded number of cards
-
-                    // Don't add the same card twice
-                    if($.inArray(rand_card, cards) == -1) {
-                        cards.push(rand_card);
-                        break;
-                    }
-                }
-            }
-
-            var callback = function(card) {
+            var ok = function(card) {
                 $this.create_write_sentence(player_id, card, root);
             };
-            this.select_card(element, cards, callback);
+            var cards = $this.create_deck().map(function(card) {
+                return { 'value':card };
+            });
+            return $this.select_cards(cards, ok, element);
         },
 
         create_write_sentence: function(player_id, card, root) {
@@ -290,20 +290,22 @@
 
         invitation: function(player_id, game, root) {
             var poll = true;
+            var deferred;
             if(game.owner) {
-                this.invitation_owner(player_id, game, root);
+                deferred = this.invitation_owner(player_id, game, root);
             } else {
                 if(game.self !== null && game.self !== undefined) {
-                    this.invitation_pick(player_id, game, root);
+                    deferred = this.invitation_pick(player_id, game, root);
                     // do not disturb a player while (s)he is picking a card
                     poll = game.self[0] !== null;
                 } else {
-                    this.invitation_participate(player_id, game, root);
+                    deferred = this.invitation_participate(player_id, game, root);
                 }
             }
             if(poll) {
               this.poll({ 'modified': game.modified, 'game_id': game.id, 'player_id': player_id }, root);
             }
+            return deferred;
         },
 
         invitation_owner: function(player_id, game, root) {
@@ -342,109 +344,83 @@
             var $this = this;
             var element = $('.cardstories_invitation .cardstories_pick', root);
             this.set_active(root, element);
-            this.player_select_card(player_id, game.id, game.sentence, game.self[2], 'pick', element, root);
-        },
-
-        player_select_card: function(player_id, game_id, sentence, cards, action, element, root, title, options) {
-            // Optional arguments
-            if (!title) { title = []; }
-            if (!options) { options = []; }
-
-            var $this = this;
-            this.set_active(root, element);
-            $('.cardstories_sentence', element).text(sentence);
-
-            var callback = function(card) {
-                $this.send_game(player_id, game_id, element, 'action=' + action + '&player_id=' + player_id + '&game_id=' + game_id + '&card=' + card);
+            $('.cardstories_sentence', element).text(game.sentence);
+            var ok = function(card) {
+                $this.send_game(player_id, game.id, element, 'action=pick&player_id=' + player_id + '&game_id=' + game.id + '&card=' + card);
             };
-            this.select_card(element, cards, callback);
+            var cards = game.self[2].map(function(card) { return {'value':card}; });
+            return $this.select_cards(cards, ok, element);
         },
 
-        select_card: function(element, cards, callback, titles, options) {
-            // Optional arguments
-            if(!callback) { callback = null; }
-            if(!titles) { titles = []; }
-            if(!options) { options = {}; }
-
-            // Add generic options shared by all docks
-            if(!('active' in options)) { options.active = 2; }
-            if(!('size' in options)) { options.size = 200; }
-            if(!('distance' in options)) { options.distance = 200; }
-
-            // The cards hand, containing everything related to the dock display
-            var hand = $('.cardstories_cards_hand', element);
-            // The jqDock dock itself
-            var dock = $('.cardstories_cards', hand);
-            // The card slots to fill
-            var card_links = $('.cardstories_card_link', dock);
-            // The template used to populate card slots
-            var card_template = $('.cardstories_card_template', hand);
-            // Take data to populate individual card elements from the template container
-            var meta = card_template.metadata({type: "attr", name: "data"});
-
-            // Trick to make cards overlap
-            // jqDock positions the cards based on a smaller transparent image
-            // the actual image is added after the dock formatting
-            options.onReady = function(is_ready) {
-                card_links.each(function(index) {
-                    // Default values
-                    var card = cards[index];
-                    var card_file = meta.nocard;
-                    var card_bg = meta.card_bg;
-                    var card_bg_selected = meta.card_bg_selected;
-
-                    // Insert real card image (overlapping)
-                    if(index < cards.length && card !== null) {
-                        card_file = meta.card.supplant({'card': card});
-                    }
-                    $(this).css({zIndex: 3 * (card_links.length - index)});
-                    $(this).append(card_template.html());
-                    $('.cardstories_card_foreground', this).attr('src', card_file);
-                    $('.cardstories_card_foreground', this).css({zIndex: 2 * (card_links.length - index)});
-                    $('.cardstories_card_background', this).attr('src', card_bg);
-                    $('.cardstories_card_background', this).css({zIndex: card_links.length - index});
-
-                    // Store card number
-                    $('.cardstories_card_foreground', this).metadata({type: "attr", name: "data"}).card = card;
-
-                    // Link
-                    // Freeze the dock and show confirmation message if a callback was specified
-                    $(this).unbind('click');
-                    if(callback) {
-                        var card_link = $(this);
-                        $('.cardstories_card_foreground', this).click(function() { 
-                            if(card_link.filter('.cardstories_card_selected').removeClass('cardstories_card_selected').length) {
-                                dock.jqDock('nudge'); // Unfreeze
-                                $('.cardstories_card_background', card_link).attr('src', card_bg);
-                            } else if(!$('.cardstories_card_selected', dock).length){
-                                dock.jqDock('freeze'); // Freeze
-                                card_link.addClass('cardstories_card_selected');
-                                $('.cardstories_card_background', card_link).attr('src', card_bg_selected);
-                            }
-                            this.blur();
-                            return false;
-                       });
-                       // Add callback on confirmation dialog
-                       $('.cardstories_submit', this).click(function() {
-                           callback(card);
-                       });
-                    }
+        select_cards: function(cards, ok, element) {
+            var confirm = $('.cardstories_card_confirm', element);
+            var middle = confirm.metadata({type: "attr", name: "data"}).middle;
+            var confirm_callback = function(card, index, nudge, cards_element) {
+                confirm.toggleClass('cardstories_card_confirm_right', index > middle).show();
+                $('.cardstories_card_confirm_ok', confirm).unbind('click').click(function() {
+                    confirm.hide();
+                    ok(card);
+                    nudge();
+                });
+                $('.cardstories_card_confirm_cancel', confirm).unbind('click').click(function() {
+                    confirm.hide();
+                    nudge();
                 });
             };
+            var hand = $('.cardstories_cards_hand', element);
+            return this.display_or_select_cards(cards, confirm_callback, hand);
+        },
 
-            // Labels for the cards
-            if(titles.length > 0) {
-                options.setLabel = function(title, index, element) { // element = div.jqDockLabel
-                    title = meta.waiting;
-                    if(index < titles.length) {
-                        title = titles[index];
+        display_or_select_cards: function(cards, select_callback, element) {
+            var meta = element.metadata({type: "attr", name: "data"});
+            var options = {
+                'active': meta.active,
+                'size': meta.size,
+                'distance': meta.distance
+            };
+            var template = $('.cardstories_card_template', element);
+            var dock = $('.cardstories_cards', element);
+
+            var deferred = $.Deferred();
+            options.onReady = function(is_ready) {
+                var links = $('a.cardstories_card', element);
+                var html = template.html();
+                var meta = template.metadata({type: "attr", name: "data"});
+                links.each(function(index) {
+                    var link = $(this);
+                    var card = cards[index];
+                    var card_file = meta.nocard;
+                    if(index < cards.length && card !== null) {
+                        card_file = meta.card.supplant({'card': card.value});
                     }
-                    return title;
-                };
-            }
+                    var label = card && card.label ? card.label : '';
+                    link.html(html.supplant({ 'label': label }));
+                    link.css({zIndex: 3 * (links.length - index)});
+                    $('.cardstories_card_background', link).attr('src', meta.card_bg).css({zIndex: links.length - index});
+                    var foreground = $('.cardstories_card_foreground', link);
+                    foreground.attr('src', card_file).css({zIndex: 2 * (links.length - index)});
+                    if(select_callback !== undefined && card && card.inactive === undefined) {
+                        link.metadata({type: "attr", name: "data"}).card = card.value;
+                        link.unbind('click').click(function() {
+                            link.addClass('cardstories_card_selected');
+                            var nudge = function() {
+                                link.removeClass('cardstories_card_selected');
+                                $('.cardstories_card_background', link).attr('src', meta.card_bg);
+                                dock.jqDock('nudge');
+                            };
+                            $('.cardstories_card_background', this).attr('src', meta.card_bg_selected);
+                            dock.jqDock('freeze');
+                            $(this).blur();
+                            select_callback.call(this, card.value, index, nudge, element);
+                        });
+                    }
+                });
+                deferred.resolve(is_ready);
+            };
 
-            // Build the dock
             dock.jqDock(options);
+
+            return deferred;
         },
 
         confirm_participate: false,
@@ -465,20 +441,22 @@
 
         vote: function(player_id, game, root) {
             var poll = true;
+            var deferred;
             if(game.owner) {
-                this.vote_owner(player_id, game, root);
+                deferred = this.vote_owner(player_id, game, root);
             } else {
                 if(game.self !== null && game.self !== undefined) {
-                    this.vote_voter(player_id, game, root);
+                    deferred = this.vote_voter(player_id, game, root);
                     // do not disturb a voting player while (s)he is voting
                     poll = game.self[1] !== null;
                 } else {
-                    this.vote_viewer(player_id, game, root);
+                    deferred = this.vote_viewer(player_id, game, root);
                 }
             }
             if(poll) {
                 this.poll({ 'modified': game.modified, 'game_id': game.id, 'player_id': player_id }, root);
             }
+            return deferred;
         },
 
         vote_viewer: function(player_id, game, root) {
@@ -496,23 +474,24 @@
         vote_voter: function(player_id, game, root) {
             var element = $('.cardstories_vote .cardstories_voter', root);
             this.set_active(root, element);
-            var cards = game.board;
             var $this = this;
+            $('.cardstories_sentence', element).text(game.sentence);
+            var ok = function(card) {
+                $this.send_game(player_id, game.id, element, 'action=vote&player_id=' + player_id + '&game_id=' + game.id + '&card=' + card);
+            };
+            var cards = [];
             var picked = game.self[0];
             var voted = game.self[1];
             var titles = [];
-            $('.cardstories_card', element).each(function(index) {
-                var is_picked = picked == cards[index];
-                if(is_picked) {
-                  $(this).unbind('click');
+            for(var i = 0; i < game.board.length; i++) {
+                var card = { 'value': game.board[i] };
+                if(card.value == picked) {
+                    card.label = 'My Card';
+                    card.inactive = true;
                 }
-                if(is_picked) {
-                  titles.push('My Card');
-                } else {
-                  titles.push(null);
-                }
-            });
-            this.player_select_card(player_id, game.id, game.sentence, cards, 'vote', element, root, titles, { labels: 'tc'});
+                cards.push(card);
+            }
+            return $this.select_cards(cards, ok, element);
         },
 
         vote_owner: function(player_id, game, root) {

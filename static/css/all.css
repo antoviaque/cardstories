@@ -151,6 +151,34 @@ body {
     background-image: url('images/brace_close.png');
 }
 
+/* displaying a deck of cards */
+
+.cardstories_cards_hand .cardstories_card_foreground,
+.cardstories_cards_hand .cardstories_card_background {
+    position:absolute; 
+    top:0; 
+    left:0; 
+    height:100%;
+}
+
+.cardstories_cards_hand .cardstories_card_label {
+    position:absolute;
+    top:-25px;
+    font-weight: bold; 
+    font-size: 20px; 
+    white-space: nowrap; 
+    color: #000000;
+    text-decoration: none;
+}
+
+.cardstories_cards_hand .cardstories_card_template {
+    display: none;
+}
+
+.cardstories_card_confirm { 
+    display: none;
+}
+
 /* state create : pick a card */
 
 .cardstories .cardstories_create .cardstories_pick_card .cardstories_cards { position: absolute; left: 30px; bottom: 15%; display: none }

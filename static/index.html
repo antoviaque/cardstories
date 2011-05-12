@@ -3,7 +3,7 @@
 <head>
 	<title>Cardstories</title>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	<script type="text/javascript" src="js/jquery/jquery-1.5.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.6.js"></script>
         <script type="text/javascript" src="js/supplant.js"></script>
 	<link rel="stylesheet" href="tablesorter/blue/style.css" type="text/css" media="screen">
 	<script type="text/javascript" src="tablesorter/jquery.tablesorter.js"></script>
@@ -49,22 +49,23 @@
           <div class="cardstories_pick_card">
             <div class="cardstories_bubble cardstories_bubble_pick_a_card"></div>
             <div class="cardstories_counter"></div>
-            <div class="cardstories_cards_hand">
+            <div class="cardstories_card_confirm" data="{middle:3}">
+              <div class="cardstories_card_confirm_ok">OK</div>
+              <div class="cardstories_card_confirm_cancel">CANCEL</div>
+            </div>
+            <div class="cardstories_cards_hand" data="{active:2,size:200,distance:200}">
               <div class="cardstories_cards">
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart_full.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart_full.png" /></a>
               </div>
-              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png'}">
+              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png',nocard:'css/images/card-back.png'}">
                 <img class="cardstories_card_foreground" src="" alt="" />
                 <img class="cardstories_card_background" src="" alt="" />
-                <div class="cardstories_card_confirmation">
-                  <div class="cardstories_submit"></div>
-                </div>
               </div>
             </div>
           </div>
@@ -177,21 +178,22 @@
 	        <div class="cardstories_brace cardstories_brace_close"></div>
               </div>
             </div>
-            <div class="cardstories_cards_hand">
+            <div class="cardstories_card_confirm" data="{middle:3}">
+              <div class="cardstories_card_confirm_ok">OK</div>
+              <div class="cardstories_card_confirm_cancel">CANCEL</div>
+            </div>
+            <div class="cardstories_cards_hand" data="{active:2,size:200,distance:200}">
               <div class="cardstories_cards">
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart_full.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart_full.png" /></a>
               </div>
-              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png'}">
+              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png',nocard:'css/images/card-back.png'}">
                 <img class="cardstories_card_foreground" src="" alt="" />
                 <img class="cardstories_card_background" src="" alt="" />
-                <div class="cardstories_card_confirmation">
-                  <div class="cardstories_submit"></div>
-                </div>
               </div>
             </div>
 	  </div>
@@ -231,21 +233,23 @@
 	        <div class="cardstories_brace cardstories_brace_close"></div>
               </div>
             </div>
-            <div class="cardstories_cards_hand">
+            <div class="cardstories_card_confirm" data="{middle:3}">
+              <div class="cardstories_card_confirm_ok">OK</div>
+              <div class="cardstories_card_confirm_cancel">CANCEL</div>
+            </div>
+            <div class="cardstories_cards_hand" data="{active:2,size:200,distance:200}">
               <div class="cardstories_cards">
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_medium_visiblepart_full.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart_full.png" /></a>
               </div>
-              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png'}">
+              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png',nocard:'css/images/card-back.png'}">
+                <div class="cardstories_card_label">{label}</div>
                 <img class="cardstories_card_foreground" src="" alt="" />
                 <img class="cardstories_card_background" src="" alt="" />
-                <div class="cardstories_card_confirmation">
-                  <div class="cardstories_submit"></div>
-                </div>
               </div>
             </div>
 	  </div>
