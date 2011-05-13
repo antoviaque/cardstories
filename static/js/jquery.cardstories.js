@@ -54,7 +54,7 @@
                 deck.push(i);
             }
             var cards = [];
-            for(var i = 0; i < 7; i++) {
+            for(i = 0; i < 7; i++) {
                 cards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
             }
             return cards;
@@ -346,7 +346,7 @@
                              'label': waiting };
                 }
                 cards.push(card);
-            };            
+            }
             var hand = $('.cardstories_cards_hand', element);
             return this.display_or_select_cards(cards, undefined, hand);
         },
