@@ -312,21 +312,9 @@
             var $this = this;
             var element = $('.cardstories_invitation .cardstories_owner', root);
             this.set_active(root, element);
-            $('a.cardstories_invite').attr('href', '?game_id=' + game.id);
-            $('a.cardstories_refresh').attr('href', '?player_id=' + player_id + '&game_id=' + game.id);
-
-            // Prepare cards and titles arrays to display on the dock
-            var players = game.players;
-            var cards = [];
-            var titles = [];
-            for(index = 0; index < players.length ; index++) {
-                titles.push(players[index][0]);
-                cards.push(players[index][3]);
-            }
-
-            this.select_card(element, cards, null, titles, { labels: 'tc', size: 150 });
-
-            // Links to other steps
+            //
+            // Proceed to vote, if possible
+            //
             var voting = $('.cardstories_voting', element);
             voting.toggleClass('cardstories_ready', game.ready);
             if(game.ready) {
@@ -334,10 +322,33 @@
                     $this.send_game(player_id, game.id, element, 'action=voting&owner_id=' + player_id + '&game_id=' + game.id);
                 });
             }
+            //
+            // Navigate to invite more friends, if desired
+            //
             var invite_friends = $('.cardstories_invite_friends', element);
             invite_friends.click(function() {
                 $this.advertise(player_id, game.id, root);
             });
+            //
+            // display the cards picked by the current players
+            //
+            var players = game.players;
+            var waiting = element.metadata({type: "attr", name: "data"}).waiting;
+            var count = $('.cardstories_card', element).length;
+            var cards = [];
+            for(var i = 0; i < count; i++) {
+                var card;
+                if(i < players.length) {
+                    card = { 'value': players[i][3],
+                             'label': players[i][0] };
+                } else {
+                    card = { 'value': null,
+                             'label': waiting };
+                }
+                cards.push(card);
+            };            
+            var hand = $('.cardstories_cards_hand', element);
+            return this.display_or_select_cards(cards, undefined, hand);
         },
 
         invitation_pick: function(player_id, game, root) {
@@ -390,7 +401,7 @@
                     var link = $(this);
                     var card = cards[index];
                     var card_file = meta.nocard;
-                    if(index < cards.length && card !== null) {
+                    if(index < cards.length && card !== null && card.value !== null) {
                         card_file = meta.card.supplant({'card': card.value});
                     }
                     var label = card && card.label ? card.label : '';
@@ -545,11 +556,11 @@
                   var c = 'cardstories_card cardstories_complete_card' + card + ' {card:' + card + '}';
                   $('.cardstories_card', this).attr('class', c);
                   var player = board2player[card];
-                  $('.cardstories_player', this).toggleClass('cardstories_win', player[2] == 'y');
-                  $('.cardstories_player', this).text(player[0]);
+                  $('.cardstories_player_name', this).toggleClass('cardstories_win', player[2] == 'y');
+                  $('.cardstories_player_name', this).text(player[0]);
                   var voters = board2voters[card];
                   if(voters !== undefined) {
-                    $('.cardstories_voter', this).each(function(voter_index) {
+                    $('.cardstories_voter_name', this).each(function(voter_index) {
                         if(voters.length > voter_index) {
                           $(this).text(voters[voter_index]);
                           $(this).show();
@@ -558,7 +569,7 @@
                         }
                       });
                   } else {
-                    $('.cardstories_voter', this).hide();
+                    $('.cardstories_voter_name', this).hide();
                   }
                   $(this).show();
                 } else {

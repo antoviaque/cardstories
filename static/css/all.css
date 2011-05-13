@@ -423,7 +423,7 @@ body {
     right: 5%;
     height: 76px;
     width: 109px;
-    z-index: 2;
+    z-index: 3;
 }
 
 .cardstories .cardstories_invitation .cardstories_owner .cardstories_cards {
@@ -504,20 +504,20 @@ body {
     margin-bottom: 5px;
 }
 
-.cardstories .cardstories_complete .cardstories_column .cardstories_player {
+.cardstories .cardstories_complete .cardstories_column .cardstories_player_name {
     background: transparent url('images/complete_other_card_bubble.png') no-repeat center center;
     height: 50px;
     overflow: hidden;
     margin-bottom: 5px;
 }
 
-.cardstories .cardstories_complete .cardstories_column .cardstories_voter {
+.cardstories .cardstories_complete .cardstories_column .cardstories_voter_name {
     background: transparent url('images/complete_player.png') no-repeat center center;
     height: 43px;
     margin-bottom: 5px;
 }
 
-.cardstories_complete .cardstories_player.cardstories_win {
+.cardstories_complete .cardstories_player_name.cardstories_win {
     border: 3px solid #567300;
 }
 
@@ -550,14 +550,14 @@ body {
     margin-bottom: 5px;
 }
 
-.cardstories .cardstories_vote .cardstories_owner .cardstories_column .cardstories_player {
+.cardstories .cardstories_vote .cardstories_owner .cardstories_column .cardstories_player_name {
     background: transparent url('images/complete_other_card_bubble.png') no-repeat center center;
     height: 50px;
     overflow: hidden;
     margin-bottom: 5px;
 }
 
-.cardstories .cardstories_vote .cardstories_owner .cardstories_column .cardstories_voter {
+.cardstories .cardstories_vote .cardstories_owner .cardstories_column .cardstories_voter_name {
     background: transparent url('images/complete_player.png') no-repeat center center;
     height: 43px;
     margin-bottom: 5px;

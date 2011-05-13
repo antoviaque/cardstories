@@ -3,7 +3,7 @@
 <head>
 	<title>Cardstories</title>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	<script type="text/javascript" src="js/jquery/jquery-1.6.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.5.1.js"></script>
         <script type="text/javascript" src="js/supplant.js"></script>
 	<link rel="stylesheet" href="tablesorter/blue/style.css" type="text/css" media="screen">
 	<script type="text/javascript" src="tablesorter/jquery.tablesorter.js"></script>
@@ -201,25 +201,21 @@
 	    <div class="cardstories_invite_friends"></div>
 	    <div class="cardstories_voting"></div>
 	    <div class="cardstories_pending_invitations"></div>
-            <div class="cardstories_cards_hand">
+            <div class="cardstories_cards_hand" data="{active:2,size:200,distance:200}">
               <div class="cardstories_cards">
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart.png" /></a>
-                <a class="cardstories_card_link" href="javascript://"><img class="cardstories_card" src="css/images/card_thumbs_visiblepart_full.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart.png" /></a>
+                <a class="cardstories_card" href="javascript://"><img src="css/images/card_medium_visiblepart_full.png" /></a>
               </div>
-              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png', nocard:'css/images/card-back.png', waiting:'Waiting'}">
+              <div class="cardstories_card_template" data="{card:'css/images/card0{card}.png',card_bg:'css/images/card_bg.png',card_bg_selected:'css/images/card_bg_selected.png',nocard:'css/images/card-back.png'}">
+                <div class="cardstories_card_label">{label}</div>
                 <img class="cardstories_card_foreground" src="" alt="" />
                 <img class="cardstories_card_background" src="" alt="" />
-                <div class="cardstories_card_confirmation">
-                  <div class="cardstories_submit"></div>
-                </div>
               </div>
             </div>
-	    <a href="" class="cardstories_invite">link to the game</a>
-	    <a href="" class="cardstories_refresh">refresh</a>
 	  </div>
 	</div>
 	<div class="cardstories_vote">
@@ -264,57 +260,57 @@
             <div class="cardstories_votes">
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
               <div class="cardstories_column">
                 <div class="cardstories_card"></div>
-                <div class="cardstories_player"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
-                <div class="cardstories_voter"></div>
+                <div class="cardstories_player_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
+                <div class="cardstories_voter_name"></div>
               </div>
             </div>
             <div class="cardstories_finish">COMPLETE</div>
@@ -332,57 +328,57 @@
           <div class="cardstories_votes">
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
             <div class="cardstories_column">
               <div class="cardstories_card"></div>
-              <div class="cardstories_player"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
-              <div class="cardstories_voter"></div>
+              <div class="cardstories_player_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
+              <div class="cardstories_voter_name"></div>
             </div>
           </div>
         </div>
