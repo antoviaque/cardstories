@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 Dachary <loic@dachary.org>
+# Copyright (C) 2011 Loic Dachary <loic@dachary.org>
 #
 # This software's license gives you freedom; you can copy, convey,
 # propagate, redistribute and/or modify this program under the terms of
@@ -272,8 +272,12 @@ class CardstoriesService(service.Service):
         return self.game_method(game_id, args['action'][0], owner_id)
 
     def invite(self, args):
-        self.required(args, 'invite', 'player_id')
-        player_ids = args['player_id']
+        self.required(args, 'invite')
+        if args.has_key('player_id'):
+          player_ids = args['player_id']
+        else:
+          player_ids = []
+
         game_id = self.required_game_id(args)
         return self.game_method(game_id, args['action'][0], player_ids)
 
